@@ -1,6 +1,8 @@
 defmodule MyCoolAppWeb.Resolvers.AccountResolver do
   alias MyCoolApp.Accounts
 
+  import MyCoolApp.AuthHelper
+
   def list_users(_parent, _args, _resolutions) do
     {:ok, Accounts.list_users()}
   end
@@ -15,6 +17,19 @@ defmodule MyCoolAppWeb.Resolvers.AccountResolver do
       {:error, changeset} ->
         {:error, extract_error_msg(changeset)}
     end
+  end
+
+  def login(%{email: email, password: password}, _info) do
+    with {:ok, user} <- login_with_email_pass(email, password),
+      {:ok, jwt, _} <- MyCoolApp.Guardian.encode_and_sign(user),
+      {:ok, _ } <- MyCoolApp.Accounts.store_token(user, jwt) do
+      {:ok, %{access_token: jwt}}
+    end
+  end
+
+  def logout(_args,  %{context: %{current_user: current_user, access_token: _token}}) do
+    MyCoolApp.Accounts.revoke_token(current_user, nil)
+    {:ok, current_user}
   end
 
   defp extract_error_msg(changeset) do

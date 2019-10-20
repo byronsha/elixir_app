@@ -1,4 +1,4 @@
-defmodule MyCoolAppWeb.AuthHelper do
+defmodule MyCoolApp.AuthHelper do
   @moduledoc false
 
   import Comeonin.Bcrypt, only: [checkpw: 2]

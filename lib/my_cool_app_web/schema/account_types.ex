@@ -9,13 +9,20 @@ defmodule MyCoolAppWeb.Schema.AccountTypes do
     field :id, :id
     field :name, :string
     field :email, :string
-    field :avatar_url, :string
+    field :access_token, :string
   end
 
   object :account_queries do
     @desc "Get all users"
     field :list_users, list_of(:user) do
       resolve(&Resolvers.AccountResolver.list_users/3)
+    end
+
+    field :login, type: :user do
+      arg(:email, non_null(:string))
+      arg(:password, non_null(:string))
+
+      resolve(&Resolvers.AccountResolver.login/2)
     end
   end
 
