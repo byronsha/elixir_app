@@ -27,52 +27,49 @@ const USERS_SUBSCRIPTION = gql`
 
 function Users({ subscribeToNew, newItemPosition, createParams }) {
   return (
-    <div>
-      <h1>Users!</h1>
-      <Query query={LIST_USERS}>
-        {({ loading, error, data, subscribeToMore }) => {
-          if (loading) return "Loading...";
-          if (error) return `Error! ${error.message}`;
+    <Query query={LIST_USERS}>
+      {({ loading, error, data, subscribeToMore }) => {
+        if (loading) return "Loading...";
+        if (error) return `Error! ${error.message}`;
 
-          return (
-            <>
-              {/* // This NewUser component is the form to create a new user, we'll build that next. */}
-              <NewUser params={createParams} />
-              <Subscriber subscribeToNew={() =>
-                subscribeToMore({
-                  document: USERS_SUBSCRIPTION,
-                  updateQuery: (prev, { subscriptionData }) => {
-                    // if nothing is coming through the socket, just use the current data
-                    if (!subscriptionData.data) return prev;
+        return (
+          <>
+            {/* // This NewUser component is the form to create a new user, we'll build that next. */}
+            <NewUser params={createParams} />
+            <Subscriber subscribeToNew={() =>
+              subscribeToMore({
+                document: USERS_SUBSCRIPTION,
+                updateQuery: (prev, { subscriptionData }) => {
+                  // if nothing is coming through the socket, just use the current data
+                  if (!subscriptionData.data) return prev;
 
-                    // something new is coming in! 
-                    const newUser = subscriptionData.data.userCreated;
+                  // something new is coming in! 
+                  const newUser = subscriptionData.data.userCreated;
 
-                    // Check that we don't already have the user stored.
-                    if (prev.listUsers.find((user) => user.id === newUser.id)) {
-                      return prev;
-                    }
+                  // Check that we don't already have the user stored.
+                  if (prev.listUsers.find((user) => user.id === newUser.id)) {
+                    return prev;
+                  }
 
-                    return produce(prev, (next) => {
-                      // Add that new user!
-                      next.listUsers.unshift(newUser);
-                    });
-                  },
-                })
-              }>
-                <ul>
-                  {data.listUsers.map(user => (
-                    <li key={user.id}>
-                      {user.name}: {user.email}
-                    </li>
-                  ))}
-                </ul>
-              </Subscriber>
-            </>
-          );
-        }}
-      </Query>
-    </div>
+                  return produce(prev, (next) => {
+                    // Add that new user!
+                    next.listUsers.unshift(newUser);
+                  });
+                },
+              })
+            }>
+              <ul>
+                {data.listUsers.map(user => (
+                  <li key={user.id}>
+                    {user.name}: {user.email}
+                  </li>
+                ))}
+              </ul>
+            </Subscriber>
+          </>
+        );
+      }}
+    </Query>
   );
 }
 export default Users;

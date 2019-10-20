@@ -1,16 +1,19 @@
 import React from 'react';
 import { ApolloProvider } from 'react-apollo';
-import './App.css';
 import { createClient } from './util/apollo';
 import Users from './Users';
+import { theme, ThemeProvider, CSSReset } from '@chakra-ui/core';
 
 function App() {
   const client = createClient();
 
   return (
-    <ApolloProvider client={client}>
-      <Users />
-    </ApolloProvider>
+    <ThemeProvider theme={theme}>
+      <ApolloProvider client={client}>
+        <CSSReset />
+        <Users />
+      </ApolloProvider>
+    </ThemeProvider>
   );
 }
 
