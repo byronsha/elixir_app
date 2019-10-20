@@ -23,7 +23,7 @@ const USERS_SUBSCRIPTION = gql`
       email
     }
   }
-`
+`;
 
 function Users({ subscribeToNew, newItemPosition, createParams }) {
   return (

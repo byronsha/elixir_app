@@ -5,15 +5,27 @@ defmodule MyCoolApp.Accounts.User do
   schema "users" do
     field :name, :string
     field :email, :string
+    field(:password, :string, virtual: true)
+    field(:password_digest, :string)
 
     timestamps()
   end
   
-  @required_fields ~w(name)a
-  @optional_fields ~w(email)a
   def changeset(user, attrs) do
     user
-    |> cast(attrs, @required_fields ++ @optional_fields)
-    |> validate_required(@required_fields)
+    |> cast(attrs, [:name, :email, :password])
+    |> validate_required([:name, :email, :password])
+    |> unique_constraint(:email, downcase: true)
+    |> put_password_hash()
+  end
+  
+  defp put_password_hash(changeset) do
+    case changeset do
+      %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
+        put_change(changeset, :password_digest, Comeonin.Bcrypt.hashpwsalt(pass))
+
+      _ ->
+        changeset
+    end
   end
 end

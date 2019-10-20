@@ -22,7 +22,8 @@ defmodule MyCoolAppWeb.Schema.AccountTypes do
   object :account_mutations do
     field :create_user, :user do
       arg(:name, non_null(:string))
-      arg(:email, :string)
+      arg(:email, non_null(:string))
+      arg(:password, non_null(:string))
 
       resolve(&Resolvers.AccountResolver.create_user/3)
     end
