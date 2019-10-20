@@ -4,6 +4,7 @@ import { Query } from "react-apollo";
 import produce from "immer";
 import Subscriber from "./Subscriber";
 import NewUser from "./NewUser";
+import UserList from "./UserList";
 
 const LIST_USERS = gql`
   {
@@ -34,37 +35,25 @@ function Users({ subscribeToNew, newItemPosition, createParams }) {
 
         return (
           <>
-            {/* // This NewUser component is the form to create a new user, we'll build that next. */}
             <NewUser params={createParams} />
             <Subscriber subscribeToNew={() =>
               subscribeToMore({
                 document: USERS_SUBSCRIPTION,
                 updateQuery: (prev, { subscriptionData }) => {
-                  // if nothing is coming through the socket, just use the current data
                   if (!subscriptionData.data) return prev;
 
-                  // something new is coming in! 
                   const newUser = subscriptionData.data.userCreated;
-
-                  // Check that we don't already have the user stored.
                   if (prev.listUsers.find((user) => user.id === newUser.id)) {
                     return prev;
                   }
 
                   return produce(prev, (next) => {
-                    // Add that new user!
                     next.listUsers.unshift(newUser);
                   });
                 },
               })
             }>
-              <ul>
-                {data.listUsers.map(user => (
-                  <li key={user.id}>
-                    {user.name}: {user.email}
-                  </li>
-                ))}
-              </ul>
+              <UserList users={data.listUsers} />
             </Subscriber>
           </>
         );
@@ -72,4 +61,5 @@ function Users({ subscribeToNew, newItemPosition, createParams }) {
     </Query>
   );
 }
+
 export default Users;

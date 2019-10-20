@@ -35,7 +35,7 @@ const NewUser = ({ params }) => {
     >
       {(submit, { data, loading, error }) => {
         return (
-          <Box width="600px" my={4} mx="auto">
+          <Box m={4}>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -60,7 +60,7 @@ const NewUser = ({ params }) => {
                 <Input value={password} onChange={e => setPassword(e.target.value)} type="password" id="password" placeholder="Enter your password" />
               </FormControl>
 
-              <Button variantColor="teal" type="submit">
+              <Button variantColor="teal" type="submit" isLoading={loading}>
                 Submit
               </Button>
             </form>
