@@ -9,6 +9,7 @@
     "@emotion/core": "^10.0.21",
     "@emotion/styled": "^10.0.17",
     "apollo-boost": "^0.4.0",
+    "apollo-link-context": "^1.0.19",
     "emotion-theming": "^10.0.19",
     "graphql": "^14.3.1",
     "graphql-tag": "^2.10.1",
@@ -16,6 +17,7 @@
     "react": "^16.10.1",
     "react-apollo": "^2.5.6",
     "react-dom": "^16.10.1",
+    "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0"
   },
   "scripts": {

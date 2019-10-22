@@ -18,7 +18,7 @@ const CREATE_USER = gql`
   }
 `;
 
-const NewUser = ({ params }) => {
+const NewUser = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -35,7 +35,7 @@ const NewUser = ({ params }) => {
     >
       {(submit, { data, loading, error }) => {
         return (
-          <Box m={4}>
+          <Box mb={4}>
             <form
               onSubmit={(e) => {
                 e.preventDefault();

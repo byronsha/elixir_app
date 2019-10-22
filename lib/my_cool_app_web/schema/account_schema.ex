@@ -20,13 +20,6 @@ defmodule MyCoolAppWeb.Schema.AccountSchema do
     field :list_users, list_of(:user) do
       resolve(&Resolvers.AccountResolver.list_users/3)
     end
-
-    field :login, type: :token do
-      arg(:email, non_null(:string))
-      arg(:password, non_null(:string))
-
-      resolve(&Resolvers.AccountResolver.login/2)
-    end
   end
 
   object :account_mutations do
@@ -36,6 +29,13 @@ defmodule MyCoolAppWeb.Schema.AccountSchema do
       arg(:password, non_null(:string))
 
       resolve(&Resolvers.AccountResolver.create_user/3)
+    end
+
+    field :login, type: :token do
+      arg(:email, non_null(:string))
+      arg(:password, non_null(:string))
+
+      resolve(&Resolvers.AccountResolver.login/2)
     end
   end
 
