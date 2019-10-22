@@ -13,7 +13,8 @@ import {
 const CREATE_USER = gql`
   mutation CreateUser($name: String!, $email: String!, $password: String!) {
     createUser(name: $name, email: $email, password: $password) {
-      id
+      name
+      email
     }
   }
 `;
@@ -23,10 +24,8 @@ const NewUser = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const mutation = CREATE_USER;
-
   return (
-    <Mutation mutation={mutation}
+    <Mutation mutation={CREATE_USER}
       onCompleted={() => {
         setName('');
         setEmail('');

@@ -31,9 +31,13 @@ defmodule MyCoolAppWeb.Resolvers.AccountResolver do
     end
   end
 
-  def logout(_args,  %{context: %{current_user: current_user, access_token: _token}}) do
+  def logout(_args, %{context: %{current_user: current_user, access_token: _token}}) do
     MyCoolApp.Accounts.revoke_token(current_user, nil)
     {:ok, current_user}
+  end
+
+  def logout(_args, _info) do
+    {:error, "Please log in first!"}
   end
 
   defp extract_error_msg(changeset) do

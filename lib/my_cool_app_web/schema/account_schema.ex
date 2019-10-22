@@ -37,6 +37,12 @@ defmodule MyCoolAppWeb.Schema.AccountSchema do
 
       resolve(&Resolvers.AccountResolver.login/2)
     end
+
+    field :logout, type: :user do
+      arg(:email, non_null(:string))
+
+      resolve(&Resolvers.AccountResolver.logout/2)
+    end
   end
 
   object :account_subscriptions do

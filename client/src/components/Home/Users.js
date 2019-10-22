@@ -1,16 +1,21 @@
-import gql from "graphql-tag";
-import React from "react";
-import { Query } from "react-apollo";
-import produce from "immer";
-import { Box, Flex, Text, Icon } from '@chakra-ui/core';
+import gql from 'graphql-tag';
+import React from 'react';
+import { Query } from 'react-apollo';
+import produce from 'immer';
+import { Box } from '@chakra-ui/core';
 import styled from '@emotion/styled'
 
-import Subscriber from "../../Subscriber";
-import NewUser from "./NewUser";
-import UserList from "./UserList";
+import Subscriber from '../../Subscriber';
+import AppHeader from './AppHeader';
+import NewUser from './NewUser';
+import UserList from './UserList';
 
 const LIST_USERS = gql`
   {
+    viewer {
+      name
+      email
+    }
     listUsers {
       name
       email
@@ -21,7 +26,6 @@ const LIST_USERS = gql`
 const USERS_SUBSCRIPTION = gql`
   subscription onUserCreated {
     userCreated {
-      id
       name
       email
     }
@@ -35,14 +39,11 @@ function Users({ subscribeToNew, newItemPosition }) {
         if (loading) return "Loading...";
         if (error) return `Error! ${error.message}`;
 
+        if (!data.viewer) return null;
+
         return (
           <>
-            <Nav>
-              <NavInner px={6} align="center">
-                <Icon name="settings" size="24px" color="red.500" mr={2} />
-                <Text fontSize="2xl" color="red.500">tinkering about</Text>
-              </NavInner>
-            </Nav>
+            <AppHeader viewer={data.viewer} />
 
             <Container p={4}>
               <NewUser />
@@ -74,23 +75,6 @@ function Users({ subscribeToNew, newItemPosition }) {
 }
 
 export default Users;
-
-const Nav = styled('header')`
-  position: fixed;
-  top: 0;
-  z-index: 4;
-  background-color: #fff;
-  left: 0;
-  right: 0;
-  border-bottom-width: 1px;
-  width: 100%;
-  height: 4rem;
-`;
-
-const NavInner = styled(Flex)`
-  width: 100%;
-  height: 100%;
-`;
 
 const Container = styled(Box)`
   margin-top: 4rem;
