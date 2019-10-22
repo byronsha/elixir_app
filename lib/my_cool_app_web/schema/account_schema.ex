@@ -1,4 +1,4 @@
-defmodule MyCoolAppWeb.Schema.AccountTypes do
+defmodule MyCoolAppWeb.Schema.AccountSchema do
   use Absinthe.Schema.Notation
   use Absinthe.Ecto, repo: MyCoolApp.Repo
 
@@ -6,9 +6,12 @@ defmodule MyCoolAppWeb.Schema.AccountTypes do
 
   @desc "One user"
   object :user do
-    field :id, :id
     field :name, :string
     field :email, :string
+  end
+
+  @desc "Access token"
+  object :token do
     field :access_token, :string
   end
 
@@ -18,7 +21,7 @@ defmodule MyCoolAppWeb.Schema.AccountTypes do
       resolve(&Resolvers.AccountResolver.list_users/3)
     end
 
-    field :login, type: :user do
+    field :login, type: :token do
       arg(:email, non_null(:string))
       arg(:password, non_null(:string))
 

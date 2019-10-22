@@ -3,8 +3,12 @@ defmodule MyCoolAppWeb.Resolvers.AccountResolver do
 
   import MyCoolApp.AuthHelper
 
-  def list_users(_parent, _args, _resolutions) do
+  def list_users(_parent, _args, %{context: %{current_user: current_user}}) do
     {:ok, Accounts.list_users()}
+  end
+
+  def list_users(_parent, _args, _resolutions) do
+    {:error, "Not Authorized"}
   end
 
   def create_user(_parent, args, _resolutions) do
