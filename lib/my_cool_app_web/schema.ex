@@ -4,6 +4,7 @@ defmodule MyCoolAppWeb.Schema do
   import_types(Absinthe.Type.Custom)
   import_types(MyCoolAppWeb.Schema.ViewerSchema)
   import_types(MyCoolAppWeb.Schema.AccountSchema)
+  import_types(MyCoolAppWeb.Schema.FriendRequestSchema)
 
   query do
     import_fields(:viewer_queries)
@@ -12,6 +13,7 @@ defmodule MyCoolAppWeb.Schema do
 
   mutation do
     import_fields(:account_mutations)
+    import_fields(:friend_request_mutations)
   end
 
   subscription do

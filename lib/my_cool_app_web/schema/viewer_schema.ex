@@ -11,7 +11,7 @@ defmodule MyCoolAppWeb.Schema.ViewerSchema do
   end
 
   object :viewer_queries do
-    @desc "Viewer"
+    @desc "Viewer query"
     field :viewer, type: :viewer do
       resolve(&Resolvers.ViewerResolver.viewer/3)
     end

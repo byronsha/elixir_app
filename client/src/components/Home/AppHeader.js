@@ -10,7 +10,7 @@ function AppHeader({ viewer }) {
       <NavInner px={6} align="center" justifyContent="space-between">
         <Flex align="center">
           <Icon name="settings" size="24px" color="red.500" mr={2} />
-          <Text fontSize="2xl" color="red.500">tinkering about</Text>
+          <Text fontSize="2xl" color="red.500">Tinkering about</Text>
         </Flex>
 
         <LogoutButton viewer={viewer} />

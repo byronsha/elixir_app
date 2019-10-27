@@ -19,7 +19,7 @@ const CREATE_USER = gql`
   }
 `;
 
-const NewUser = () => {
+const SignupForm = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -34,7 +34,7 @@ const NewUser = () => {
     >
       {(submit, { data, loading, error }) => {
         return (
-          <Box mb={4}>
+          <Box py={6} px={4}>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -42,16 +42,16 @@ const NewUser = () => {
               }}
             >
               <FormControl mb={4}>
-                <FormLabel htmlFor="username">Username</FormLabel>
-                <Input value={name} onChange={e => setName(e.target.value)} type="text" id="name" placeholder="Enter your name" />
-              </FormControl>
-
-              <FormControl mb={4}>
                 <FormLabel htmlFor="email">Email address</FormLabel>
                 <Input value={email} onChange={e => setEmail(e.target.value)} type="email" id="email" placeholder="Enter your email" aria-describedby="email-helper-text" />
                 <FormHelperText id="email-helper-text">
                   We'll never share your email
                 </FormHelperText>
+              </FormControl>
+
+              <FormControl mb={4}>
+                <FormLabel htmlFor="username">Username</FormLabel>
+                <Input value={name} onChange={e => setName(e.target.value)} type="text" id="name" placeholder="Enter your username" />
               </FormControl>
 
               <FormControl mb={4}>
@@ -70,4 +70,4 @@ const NewUser = () => {
   );
 };
 
-export default NewUser
+export default SignupForm

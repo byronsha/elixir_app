@@ -6,22 +6,14 @@ import { Box } from '@chakra-ui/core';
 import styled from '@emotion/styled'
 
 import Subscriber from '../../Subscriber';
-import AppHeader from './AppHeader';
-import NewUser from './NewUser';
 import UserList from './UserList';
 
-const LIST_USERS = gql`
-  {
-    viewer {
-      name
-      email
-    }
-    listUsers {
-      name
-      email
-    }
+const LIST_USERS = gql`{
+  listUsers {
+    name
+    email
   }
-`;
+}`
 
 const USERS_SUBSCRIPTION = gql`
   subscription onUserCreated {
@@ -32,6 +24,10 @@ const USERS_SUBSCRIPTION = gql`
   }
 `;
 
+// notes
+// bookmark management
+// stickies
+
 function Users({ subscribeToNew, newItemPosition }) {
   return (
     <Query query={LIST_USERS}>
@@ -39,14 +35,9 @@ function Users({ subscribeToNew, newItemPosition }) {
         if (loading) return "Loading...";
         if (error) return `Error! ${error.message}`;
 
-        if (!data.viewer) return null;
-
         return (
           <>
-            <AppHeader viewer={data.viewer} />
-
             <Container p={4}>
-              <NewUser />
               <Subscriber subscribeToNew={() =>
                 subscribeToMore({
                   document: USERS_SUBSCRIPTION,

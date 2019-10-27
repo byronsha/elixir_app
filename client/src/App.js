@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import { ApolloProvider } from 'react-apollo';
 import { createClient } from './util/apollo';
-import Users from './components/Home/Users';
+import Home from './components/Home';
 import Login from './components/Login';
 import { theme, ThemeProvider, CSSReset } from '@chakra-ui/core';
 
@@ -24,7 +24,7 @@ function App() {
               <Login />
             </Route>
             <Route path="/">
-              <Users />
+              <Home />
             </Route>
           </Switch>
         </Router>
