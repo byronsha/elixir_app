@@ -8,6 +8,10 @@ defmodule MyCoolAppWeb.Schema.ViewerSchema do
   object :viewer do
     field :name, :string
     field :email, :string
+    
+    field :friend_requests, list_of(:friend_request) do
+      resolve(&Resolvers.ViewerResolver.friend_requests/3)
+    end
   end
 
   object :viewer_queries do

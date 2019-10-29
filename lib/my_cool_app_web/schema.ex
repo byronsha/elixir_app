@@ -18,5 +18,6 @@ defmodule MyCoolAppWeb.Schema do
 
   subscription do
     import_fields(:account_subscriptions)
+    import_fields(:friend_request_subscriptions)
   end
 end

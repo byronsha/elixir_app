@@ -21,4 +21,8 @@ defmodule MyCoolApp.Social do
       |> Repo.insert()
     end
   end
+
+  def friend_requests_received_by_user_id(id) do
+    Repo.all(FriendRequest, user_id_2: id)
+  end
 end
