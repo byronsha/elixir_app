@@ -3,11 +3,11 @@ import {
   BrowserRouter as Router,
   Switch,
   Route
-} from "react-router-dom";
+} from 'react-router-dom';
 import { ApolloProvider } from 'react-apollo';
-import { createClient } from './util/apollo';
-import Home from './components/Home';
-import Login from './components/Login';
+import { createClient } from 'util/apollo';
+import Home from 'components/Home';
+import Login from 'components/Login';
 import { theme, ThemeProvider, CSSReset } from '@chakra-ui/core';
 
 function App() {

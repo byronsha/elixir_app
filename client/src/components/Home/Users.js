@@ -2,10 +2,10 @@ import gql from 'graphql-tag';
 import React from 'react';
 import { Query } from 'react-apollo';
 import produce from 'immer';
-import { Box } from '@chakra-ui/core';
-import styled from '@emotion/styled'
+import { Button } from '@chakra-ui/core';
 
-import Subscriber from '../../Subscriber';
+import Subscriber from 'components/Subscriber';
+import FriendRequestModal from 'components/ui/FriendRequestModal';
 import UserList from './UserList';
 
 const LIST_USERS = gql`{
@@ -29,6 +29,8 @@ const USERS_SUBSCRIPTION = gql`
 // stickies
 
 function Users({ subscribeToNew, newItemPosition }) {
+  const [isOpen, setIsOpen] = React.useState(false);
+
   return (
     <Query query={LIST_USERS}>
       {({ loading, error, data, subscribeToMore }) => {
@@ -36,29 +38,33 @@ function Users({ subscribeToNew, newItemPosition }) {
         if (error) return `Error! ${error.message}`;
 
         return (
-          <>
-            <Container p={4}>
-              <Subscriber subscribeToNew={() =>
-                subscribeToMore({
-                  document: USERS_SUBSCRIPTION,
-                  updateQuery: (prev, { subscriptionData }) => {
-                    if (!subscriptionData.data) return prev;
+          <Subscriber subscribeToNew={() =>
+            subscribeToMore({
+              document: USERS_SUBSCRIPTION,
+              updateQuery: (prev, { subscriptionData }) => {
+                if (!subscriptionData.data) return prev;
 
-                    const newUser = subscriptionData.data.userCreated;
-                    if (prev.listUsers.find((user) => user.id === newUser.id)) {
-                      return prev;
-                    }
+                const newUser = subscriptionData.data.userCreated;
+                if (prev.listUsers.find((user) => user.id === newUser.id)) {
+                  return prev;
+                }
 
-                    return produce(prev, (next) => {
-                      next.listUsers.unshift(newUser);
-                    });
-                  },
-                })
-              }>
-                <UserList users={data.listUsers} />
-              </Subscriber>
-            </Container>
-          </>
+                return produce(prev, (next) => {
+                  next.listUsers.unshift(newUser);
+                });
+              },
+            })
+          }>
+            <UserList users={data.listUsers} />
+
+            <Button onClick={() => setIsOpen(true)}>
+              Add a friend
+            </Button>
+            <FriendRequestModal
+              isOpen={isOpen}
+              onClose={() => setIsOpen(false)}
+            />
+          </Subscriber>
         );
       }}
     </Query>
@@ -66,7 +72,3 @@ function Users({ subscribeToNew, newItemPosition }) {
 }
 
 export default Users;
-
-const Container = styled(Box)`
-  margin-top: 4rem;
-`;

@@ -7,6 +7,9 @@ defmodule MyCoolAppWeb.Resolvers.FriendRequestResolver do
     |> case do
       {:ok, friend_request} ->
         {:ok, friend_request}
+      
+      nil ->
+        {:ok, nil}
 
       {:error, changeset} ->
         {:error, extract_error_msg(changeset)}

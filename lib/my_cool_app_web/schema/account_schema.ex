@@ -20,6 +20,12 @@ defmodule MyCoolAppWeb.Schema.AccountSchema do
     field :list_users, list_of(:user) do
       resolve(&Resolvers.AccountResolver.list_users/3)
     end
+
+    field :find_user, :user do
+      arg(:email, non_null(:string))
+
+      resolve(&Resolvers.AccountResolver.find_user/3)
+    end
   end
 
   object :account_mutations do

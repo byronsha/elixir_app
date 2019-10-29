@@ -11,6 +11,14 @@ defmodule MyCoolAppWeb.Resolvers.AccountResolver do
     {:error, "Not Authorized"}
   end
 
+  def find_user(_parent, args, %{context: %{current_user: current_user}}) do
+    {:ok, Accounts.find_user_by_email(args.email)}
+  end
+
+  def find_user(_parent, _args, _resolutions) do
+    {:error, "Not Authorized"}
+  end
+
   def create_user(_parent, args, _resolutions) do
     args
     |> Accounts.create_user()

@@ -12,7 +12,7 @@ defmodule MyCoolAppWeb.Schema.FriendRequestSchema do
 
   object :friend_request_mutations do
     field :send_friend_request, :friend_request do
-      arg(:user_entity_id, non_null(:string))
+      arg(:email, non_null(:string))
       arg(:message, :string)
 
       resolve(&Resolvers.FriendRequestResolver.send_friend_request/3)

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
 const Subscriber = ({ subscribeToNew, children }) => {
   useEffect(() => {

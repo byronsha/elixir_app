@@ -113,4 +113,8 @@ defmodule MyCoolApp.Accounts do
     |> User.store_token_changeset(%{access_token: token})
     |> Repo.update()
   end
+
+  def find_user_by_email(email) do
+    Repo.get_by(User, email: String.downcase(email))
+  end
 end

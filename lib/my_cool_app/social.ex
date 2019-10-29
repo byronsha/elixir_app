@@ -9,14 +9,16 @@ defmodule MyCoolApp.Social do
     IO.inspect(attrs)
     IO.inspect(current_user)
 
-    friend_to_add = Repo.get_by(User, email: String.downcase(attrs.user_entity_id))
+    friend_to_add = Repo.get_by(User, email: String.downcase(attrs.email))
 
-    friend_request_attrs = %{user_id_1: current_user.id, user_id_2: friend_to_add.id, message: attrs.message}
-    
-    IO.inspect(friend_request_attrs)
+    if friend_to_add do
+      friend_request_attrs = %{user_id_1: current_user.id, user_id_2: friend_to_add.id, message: attrs.message}
+      
+      IO.inspect(friend_request_attrs)
 
-    %FriendRequest{}
-    |> FriendRequest.changeset(friend_request_attrs)
-    |> Repo.insert()
+      %FriendRequest{}
+      |> FriendRequest.changeset(friend_request_attrs)
+      |> Repo.insert()
+    end
   end
 end
