@@ -6,6 +6,7 @@ defmodule MyCoolAppWeb.Schema.AccountSchema do
 
   @desc "One user"
   object :user do
+    field :entity_id, :string
     field :name, :string
     field :email, :string
   end

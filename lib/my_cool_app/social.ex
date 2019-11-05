@@ -46,4 +46,23 @@ defmodule MyCoolApp.Social do
       where: fr.user_id_2 == ^id and is_nil(fr.accepted_at)
     )
   end
+
+  def friends_of_user_id(id) do
+    friend_ids_1 = Repo.all(
+      from f in Friend,
+      where: f.user_id_1 == ^id,
+      select: f.user_id_2
+    )
+
+    friend_ids_2 = Repo.all(
+      from f in Friend,
+      where: f.user_id_2 == ^id,
+      select: f.user_id_1
+    )
+
+    Repo.all(
+      from u in User,
+      where: u.id in ^friend_ids_1 or u.id in ^friend_ids_2
+    )
+  end
 end

@@ -7,6 +7,7 @@ import { Button } from '@chakra-ui/core';
 import Subscriber from 'components/Subscriber';
 import FriendRequestModal from 'components/ui/FriendRequestModal';
 import UserList from './UserList';
+import Friends from './Friends';
 import FriendRequests from './FriendRequests';
 
 const LIST_USERS = gql`{
@@ -66,6 +67,7 @@ function Users({ subscribeToNew, newItemPosition }) {
               onClose={() => setIsOpen(false)}
             />
 
+            <Friends />
             <FriendRequests />
           </Subscriber>
         );

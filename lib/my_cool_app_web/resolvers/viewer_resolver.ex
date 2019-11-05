@@ -17,4 +17,12 @@ defmodule MyCoolAppWeb.Resolvers.ViewerResolver do
   def friend_requests(_parent, _args, _resolutions) do
     {:error, "Not Authorized"}    
   end
+
+  def friends(_parent, _args, %{context: %{current_user: current_user}}) do
+    {:ok, Social.friends_of_user_id(current_user.id)}
+  end
+
+  def friend_requests(_parent, _args, _resolutions) do
+    {:error, "Not Authorized"}    
+  end
 end

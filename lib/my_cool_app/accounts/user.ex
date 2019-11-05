@@ -4,6 +4,7 @@ defmodule MyCoolApp.Accounts.User do
   alias MyCoolApp.Accounts.User
 
   schema "users" do
+    field :entity_id, :binary_id
     field :name, :string
     field :email, :string
     field(:password, :string, virtual: true)

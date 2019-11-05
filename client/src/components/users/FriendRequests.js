@@ -7,17 +7,20 @@ import { Heading } from '@chakra-ui/core';
 import Subscriber from 'components/Subscriber';
 import FriendRequestList from './FriendRequestList'
 
-const FRIEND_REQUESTS_QUERY = gql`{
-  viewer {
-    friendRequests {
-      message
-      createdAt
-      sender {
-        name
+const FRIEND_REQUESTS_QUERY = gql`
+  query ViewerFriendRequests {
+    viewer {
+      friendRequests {
+        entityId
+        message
+        createdAt
+        sender {
+          name
+        }
       }
     }
   }
-}`
+`
 
 const FRIEND_REQUESTS_SUBSCRIPTION = gql`
   subscription onFriendRequestSent {
