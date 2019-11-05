@@ -6,10 +6,12 @@ defmodule MyCoolAppWeb.Schema.FriendRequestSchema do
 
   @desc "A friend request"
   object :friend_request do
+    field :entity_id, :string
     field :message, :string
     field :sender, :user do
       resolve(&Resolvers.FriendRequestResolver.sender/3)
     end
+    field :accepted_at, :string
     field :created_at, :string do
       resolve(&Resolvers.FriendRequestResolver.created_at/3)
     end
@@ -21,6 +23,12 @@ defmodule MyCoolAppWeb.Schema.FriendRequestSchema do
       arg(:message, :string)
 
       resolve(&Resolvers.FriendRequestResolver.send_friend_request/3)
+    end
+
+    field :accept_friend_request, :friend_request do
+      arg(:entity_id, non_null(:string))
+
+      resolve(&Resolvers.FriendRequestResolver.accept_friend_request/3)
     end
   end
 

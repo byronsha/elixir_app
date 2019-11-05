@@ -10,9 +10,9 @@ import {
   Button,
 } from '@chakra-ui/core';
 
-import { AUTH_TOKEN } from '../../constants';
+import { AUTH_TOKEN } from 'constants/index';
 
-const LOGIN = gql`
+const LOGIN_MUTATION = gql`
   mutation Login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
       accessToken
@@ -26,23 +26,18 @@ const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const setAccessToken = data => {
+  const handleCompleted = data => {
     if (!data.login) {
-      console.log('Login failed!')
-      return;
+      return console.log('Login failed!')
     };
+    setEmail('');
+    setPassword('');
     localStorage.setItem(AUTH_TOKEN, data.login.accessToken)
+    history.push('/')
   }
 
   return (
-    <Mutation mutation={LOGIN}
-      onCompleted={data => {
-        setEmail('');
-        setPassword('');
-        setAccessToken(data)
-        history.push('/')
-      }}
-    >
+    <Mutation mutation={LOGIN_MUTATION} onCompleted={handleCompleted}>
       {(submit, { data, loading, error }) => {
         return (
           <Box py={6} px={4}>
@@ -54,15 +49,31 @@ const LoginForm = () => {
             >
               <FormControl mb={4}>
                 <FormLabel htmlFor="email">Email address</FormLabel>
-                <Input value={email} onChange={e => setEmail(e.target.value)} type="email" id="email" placeholder="Enter your email" />
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                />
               </FormControl>
 
               <FormControl mb={4}>
                 <FormLabel htmlFor="password">Password</FormLabel>
-                <Input value={password} onChange={e => setPassword(e.target.value)} type="password" id="password" placeholder="Enter your password" />
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                />
               </FormControl>
 
-              <Button variantColor="teal" type="submit" isLoading={loading}>
+              <Button
+                type="submit"
+                variantColor="teal"
+                isLoading={loading}
+              >
                 Submit
               </Button>
             </form>

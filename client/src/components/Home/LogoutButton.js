@@ -4,7 +4,7 @@ import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag';
 import { Button } from '@chakra-ui/core';
 
-const LOGOUT = gql`
+const LOGOUT_MUTATION = gql`
   mutation Logout($email: String!) {
     logout(email: $email) {
       email
@@ -17,7 +17,7 @@ const LogoutButton = ({ viewer }) => {
 
   return (
     <Mutation
-      mutation={LOGOUT}
+      mutation={LOGOUT_MUTATION}
       onCompleted={() => history.push('/login')}
     >
       {(submit, { data, loading, error }) => {

@@ -6,8 +6,8 @@ import {
 } from 'react-router-dom';
 import { ApolloProvider } from 'react-apollo';
 import { createClient } from 'util/apollo';
-import Home from 'components/Home';
-import Login from 'components/Login';
+import Home from 'components/home';
+import Login from 'components/login';
 import { theme, ThemeProvider, CSSReset } from '@chakra-ui/core';
 
 function App() {

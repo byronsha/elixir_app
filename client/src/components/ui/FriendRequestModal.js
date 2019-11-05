@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from '@emotion/styled'
 import {
   Modal,
   ModalOverlay,
@@ -12,17 +13,21 @@ import FriendRequestForm from './FriendRequestForm'
 
 function FriendRequestModal({ isOpen, onClose }) {
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} size="lg" isCentered>
       <ModalOverlay />
-      <ModalContent>
+      <StyledModalContent>
         <ModalHeader>Add a friend</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <FriendRequestForm closeModal={onClose} />
         </ModalBody>
-      </ModalContent>
+      </StyledModalContent>
     </Modal>
   )
 }
 
 export default FriendRequestModal
+
+const StyledModalContent = styled(ModalContent)`
+  border-radius: 0.25rem;
+`

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import gql from "graphql-tag";
-import { Mutation } from "react-apollo"
+import React, { useState } from 'react';
+import gql from 'graphql-tag';
+import { Mutation } from 'react-apollo'
 import {
   FormControl,
   FormLabel,
@@ -8,9 +8,9 @@ import {
   Input,
   Box,
   Button,
-} from "@chakra-ui/core";
+} from '@chakra-ui/core';
 
-const CREATE_USER = gql`
+const CREATE_USER_MUTATION = gql`
   mutation CreateUser($name: String!, $email: String!, $password: String!) {
     createUser(name: $name, email: $email, password: $password) {
       name
@@ -25,7 +25,7 @@ const SignupForm = () => {
   const [password, setPassword] = useState('');
 
   return (
-    <Mutation mutation={CREATE_USER}
+    <Mutation mutation={CREATE_USER_MUTATION}
       onCompleted={() => {
         setName('');
         setEmail('');
@@ -43,7 +43,14 @@ const SignupForm = () => {
             >
               <FormControl mb={4}>
                 <FormLabel htmlFor="email">Email address</FormLabel>
-                <Input value={email} onChange={e => setEmail(e.target.value)} type="email" id="email" placeholder="Enter your email" aria-describedby="email-helper-text" />
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  aria-describedby="email-helper-text"
+                />
                 <FormHelperText id="email-helper-text">
                   We'll never share your email
                 </FormHelperText>
@@ -51,15 +58,31 @@ const SignupForm = () => {
 
               <FormControl mb={4}>
                 <FormLabel htmlFor="username">Username</FormLabel>
-                <Input value={name} onChange={e => setName(e.target.value)} type="text" id="name" placeholder="Enter your username" />
+                <Input
+                  id="name"
+                  type="text"
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                  placeholder="Enter your username"
+                />
               </FormControl>
 
               <FormControl mb={4}>
                 <FormLabel htmlFor="password">Password</FormLabel>
-                <Input value={password} onChange={e => setPassword(e.target.value)} type="password" id="password" placeholder="Enter your password" />
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                />
               </FormControl>
 
-              <Button variantColor="teal" type="submit" isLoading={loading}>
+              <Button
+                type="submit"
+                variantColor="teal"
+                isLoading={loading}
+              >
                 Submit
               </Button>
             </form>

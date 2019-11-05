@@ -7,16 +7,18 @@ import { Box, Link } from '@chakra-ui/core';
 import styled from '@emotion/styled'
 
 import AppHeader from './AppHeader'
-import Users from './Users'
+import Users from '../users'
 
-const VIEWER_QUERY = gql`{
-  viewer {
-    name
-    email
+const VIEWER_QUERY = gql`
+  {
+    viewer {
+      name
+      email
+    }
   }
-}`;
+`;
 
-const Home = cProps => (
+const Home = props => (
   <Query query={VIEWER_QUERY}>
     {({ loading, error, data, subscribeToMore }) => {
       if (loading) return "Loading...";
@@ -24,7 +26,7 @@ const Home = cProps => (
 
       if (!data.viewer) return null;
 
-      const path = cProps.location.pathname;
+      const path = props.location.pathname;
 
       return (
         <>
