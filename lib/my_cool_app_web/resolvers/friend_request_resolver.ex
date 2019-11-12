@@ -42,8 +42,8 @@ defmodule MyCoolAppWeb.Resolvers.FriendRequestResolver do
     {:ok, Accounts.get_user!(parent.user_id_1)}
   end
 
-  def sender(_parent, _args, _resolutions) do
-    {:error, "Not Authorized"}
+  def recipient(parent, _args, _resolutions) do
+    {:ok, Accounts.get_user!(parent.user_id_2)}
   end
 
   def created_at(parent, _args, _resolutions) do

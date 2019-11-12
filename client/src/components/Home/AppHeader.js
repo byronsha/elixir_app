@@ -1,6 +1,7 @@
 import React from "react";
 import styled from '@emotion/styled'
-import { Flex, Text, Icon } from '@chakra-ui/core';
+import { Flex, Box, Text } from '@chakra-ui/core';
+import { GiSpikedDragonHead } from 'react-icons/gi'
 
 import LogoutButton from './LogoutButton';
 
@@ -9,7 +10,7 @@ function AppHeader({ viewer }) {
     <Nav>
       <NavInner px={6} align="center" justifyContent="space-between">
         <Flex align="center">
-          <Icon name="settings" size="24px" color="red.500" mr={2} />
+          <Box as={GiSpikedDragonHead} size="24px" color="red.500" mr={2} />
           <Text fontSize="2xl" color="red.500">Tinkering about</Text>
         </Flex>
 

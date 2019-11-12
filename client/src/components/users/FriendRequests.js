@@ -4,12 +4,14 @@ import { Query } from 'react-apollo';
 import produce from 'immer';
 import { Heading } from '@chakra-ui/core';
 
+import { Card } from 'components/ui'
 import Subscriber from 'components/Subscriber';
 import FriendRequestList from './FriendRequestList'
 
 const FRIEND_REQUESTS_QUERY = gql`
   query ViewerFriendRequests {
     viewer {
+      email
       friendRequests {
         entityId
         message
@@ -23,8 +25,9 @@ const FRIEND_REQUESTS_QUERY = gql`
 `
 
 const FRIEND_REQUESTS_SUBSCRIPTION = gql`
-  subscription onFriendRequestSent {
-    friendRequestSent {
+  subscription onFriendRequestSent($email: String!) {
+    friendRequestSent(email: $email) {
+      entityId
       message
       createdAt
       sender {
@@ -41,26 +44,32 @@ function FriendRequests({ subscribeToNew, newItemPosition }) {
         if (loading) return "Loading...";
         if (error) return `Error! ${error.message}`;
 
+        if (!data.viewer) return null;
+
         return (
           <Subscriber subscribeToNew={() =>
             subscribeToMore({
               document: FRIEND_REQUESTS_SUBSCRIPTION,
+              variables: { email: data.viewer.email },
               updateQuery: (prev, { subscriptionData }) => {
                 if (!subscriptionData.data) return prev;
 
                 const newFriendRequest = subscriptionData.data.friendRequestSent;
-                // if (prev.viewer.friendRequests.find((rq) => rq.entityId === newFriendRequest.entityId)) {
-                //   return prev;
-                // }
+
+                if (prev.viewer.friendRequests.find((rq) => rq.entityId === newFriendRequest.entityId)) {
+                  return prev;
+                }
 
                 return produce(prev, (next) => {
-                  next.friendRequests.unshift(newFriendRequest);
+                  next.viewer.friendRequests.unshift(newFriendRequest);
                 });
               },
             })
           }>
-            <Heading size="md">Friend requests</Heading>
-            <FriendRequestList friendRequests={data.viewer.friendRequests} />
+            <Card p={4} mb={4}>
+              <Heading size="md" mb={4}>Friend requests (received)</Heading>
+              <FriendRequestList friendRequests={data.viewer.friendRequests} />
+            </Card>
           </Subscriber>
         )
       }}

@@ -4,12 +4,18 @@ defmodule MyCoolAppWeb.Schema.FriendRequestSchema do
 
   alias MyCoolAppWeb.Resolvers
 
+  alias MyCoolApp.Repo
+  alias MyCoolApp.Accounts.User
+
   @desc "A friend request"
   object :friend_request do
     field :entity_id, :string
     field :message, :string
     field :sender, :user do
       resolve(&Resolvers.FriendRequestResolver.sender/3)
+    end
+    field :recipient, :user do
+      resolve(&Resolvers.FriendRequestResolver.recipient/3)
     end
     field :accepted_at, :string
     field :created_at, :string do
@@ -34,13 +40,31 @@ defmodule MyCoolAppWeb.Schema.FriendRequestSchema do
 
   object :friend_request_subscriptions do
     field :friend_request_sent, :friend_request do
-      config(fn _, _ ->
-        {:ok, topic: "friend_requests"}  
+      arg(:email, non_null(:string))
+
+      config(fn args, _ ->
+        {:ok, topic: args.email}  
       end)
 
       trigger(:send_friend_request,
-        topic: fn _ ->
-          "friend_requests"
+        topic: fn friend_request ->
+          recipient = Repo.get!(User, friend_request.user_id_2)
+          recipient.email
+        end
+      )
+    end
+
+    field :friend_request_accepted, :friend_request do
+      arg(:entity_id, non_null(:string))
+
+      config(fn args, _ ->
+        {:ok, topic: args.entity_id}  
+      end)
+
+      trigger(:accept_friend_request,
+        topic: fn friend_request ->
+          sender = Repo.get!(User, friend_request.user_id_1)
+          sender.entity_id
         end
       )
     end

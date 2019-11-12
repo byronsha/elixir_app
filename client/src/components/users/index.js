@@ -1,14 +1,14 @@
-import gql from 'graphql-tag';
 import React from 'react';
+import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import produce from 'immer';
-import { Button } from '@chakra-ui/core';
+import { Box } from '@chakra-ui/core';
 
 import Subscriber from 'components/Subscriber';
-import FriendRequestModal from 'components/ui/FriendRequestModal';
-import UserList from './UserList';
+// import UserList from './UserList';
 import Friends from './Friends';
 import FriendRequests from './FriendRequests';
+import SentFriendRequests from './SentFriendRequests';
 
 const LIST_USERS = gql`{
   listUsers {
@@ -30,50 +30,41 @@ const USERS_SUBSCRIPTION = gql`
 // bookmark management
 // stickies
 
-function Users({ subscribeToNew, newItemPosition }) {
-  const [isOpen, setIsOpen] = React.useState(false);
+const Users = ({ subscribeToNew, newItemPosition }) => (
+  <Query query={LIST_USERS}>
+    {({ loading, error, data, subscribeToMore }) => {
+      if (loading) return "Loading...";
+      if (error) return `Error! ${error.message}`;
 
-  return (
-    <Query query={LIST_USERS}>
-      {({ loading, error, data, subscribeToMore }) => {
-        if (loading) return "Loading...";
-        if (error) return `Error! ${error.message}`;
+      return (
+        <Subscriber subscribeToNew={() =>
+          subscribeToMore({
+            document: USERS_SUBSCRIPTION,
+            updateQuery: (prev, { subscriptionData }) => {
+              if (!subscriptionData.data) return prev;
 
-        return (
-          <Subscriber subscribeToNew={() =>
-            subscribeToMore({
-              document: USERS_SUBSCRIPTION,
-              updateQuery: (prev, { subscriptionData }) => {
-                if (!subscriptionData.data) return prev;
+              const newUser = subscriptionData.data.userCreated;
+              if (prev.listUsers.find((user) => user.id === newUser.id)) {
+                return prev;
+              }
 
-                const newUser = subscriptionData.data.userCreated;
-                if (prev.listUsers.find((user) => user.id === newUser.id)) {
-                  return prev;
-                }
-
-                return produce(prev, (next) => {
-                  next.listUsers.unshift(newUser);
-                });
-              },
-            })
-          }>
-            <UserList users={data.listUsers} />
-
-            <Button onClick={() => setIsOpen(true)}>
-              Add a friend
-            </Button>
-            <FriendRequestModal
-              isOpen={isOpen}
-              onClose={() => setIsOpen(false)}
-            />
-
+              return produce(prev, (next) => {
+                next.listUsers.unshift(newUser);
+              });
+            },
+          })
+        }>
+          <Box pt={8}>
             <Friends />
             <FriendRequests />
-          </Subscriber>
-        );
-      }}
-    </Query>
-  );
-}
+            <SentFriendRequests />
+          </Box>
+
+          {/* <UserList users={data.listUsers} /> */}
+        </Subscriber>
+      );
+    }}
+  </Query>
+);
 
 export default Users;

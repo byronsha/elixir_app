@@ -3,7 +3,7 @@ defmodule MyCoolApp.Social.FriendRequest do
   import Ecto.Changeset
 
   schema "friend_requests" do
-    field :entity_id, :binary_id
+    field :entity_id, :binary_id, read_after_writes: true
     field :user_id_1, :integer
     field :user_id_2, :integer
     field :message, :string

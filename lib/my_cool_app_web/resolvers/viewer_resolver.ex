@@ -14,15 +14,15 @@ defmodule MyCoolAppWeb.Resolvers.ViewerResolver do
     {:ok, Social.friend_requests_received_by_user_id(current_user.id)}
   end
 
-  def friend_requests(_parent, _args, _resolutions) do
-    {:error, "Not Authorized"}    
+  def sent_friend_requests(_parent, _args, %{context: %{current_user: current_user}}) do
+    {:ok, Social.friend_requests_sent_by_user_id(current_user.id)}
   end
 
   def friends(_parent, _args, %{context: %{current_user: current_user}}) do
     {:ok, Social.friends_of_user_id(current_user.id)}
   end
 
-  def friend_requests(_parent, _args, _resolutions) do
+  def friends(_parent, _args, _resolutions) do
     {:error, "Not Authorized"}    
   end
 end

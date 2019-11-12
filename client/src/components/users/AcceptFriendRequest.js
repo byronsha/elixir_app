@@ -19,8 +19,8 @@ function AcceptFriendRequest(props) {
     >
       {(submit, { data, loading, error }) => (
         <Button
-          size="sm"
-          variantColor="green"
+          size="xs"
+          variantColor="blue"
           onClick={(e) => {
             e.preventDefault();
             submit({ variables: { entityId: props.entityId } });

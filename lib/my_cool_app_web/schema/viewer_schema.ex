@@ -6,6 +6,7 @@ defmodule MyCoolAppWeb.Schema.ViewerSchema do
 
   @desc "The currently signed in user"
   object :viewer do
+    field :entity_id, :string
     field :name, :string
     field :email, :string
     
@@ -15,6 +16,10 @@ defmodule MyCoolAppWeb.Schema.ViewerSchema do
 
     field :friend_requests, list_of(:friend_request) do
       resolve(&Resolvers.ViewerResolver.friend_requests/3)
+    end
+
+    field :sent_friend_requests, list_of(:friend_request) do
+      resolve(&Resolvers.ViewerResolver.sent_friend_requests/3)
     end
   end
 

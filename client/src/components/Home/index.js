@@ -8,6 +8,8 @@ import styled from '@emotion/styled'
 
 import AppHeader from './AppHeader'
 import Users from '../users'
+import Notes from '../notes';
+import Hands from '../hands';
 
 const VIEWER_QUERY = gql`
   {
@@ -41,16 +43,28 @@ const Home = props => (
                 <StyledLink as={NavLink} to="/users" active={path === '/users'}>
                   Users
                 </StyledLink>
+                <StyledLink as={NavLink} to="/notes" active={path === '/notes'}>
+                  Notes
+                </StyledLink>
+                <StyledLink as={NavLink} to="/hands" active={path === '/hands'}>
+                  Hands
+                </StyledLink>
               </NavInner>
             </Nav>
           </NavContainer>
+
           <Box pl="18rem" mt={16}>
-            <MainContainer>
-              <Route path="/users" component={Users} />
-              <Route path="/" exact>
-                <div>home</div>
-              </Route>
-            </MainContainer>
+            <main>
+              <Route path="/hands" component={Hands} />
+
+              <MainContainer>
+                <Route path="/users" component={Users} />
+                <Route path="/notes" component={Notes} />
+                <Route path="/" exact>
+                  <div>blah blah blah</div>
+                </Route>
+              </MainContainer>
+            </main>
           </Box>
         </>
       )
@@ -82,12 +96,10 @@ const NavInner = styled('nav')`
   padding: 1.5rem;
 `
 
-const MainContainer = styled('main')`
+const MainContainer = styled(Box)`
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 3rem;
   max-width: 46rem;
-  padding-top: 2rem;
   padding-left: 1.25rem;
   padding-right: 1.25rem;
 `

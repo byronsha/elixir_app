@@ -47,6 +47,13 @@ defmodule MyCoolApp.Social do
     )
   end
 
+  def friend_requests_sent_by_user_id(id) do
+    Repo.all(
+      from fr in FriendRequest,
+      where: fr.user_id_1 == ^id and is_nil(fr.accepted_at)
+    )
+  end
+
   def friends_of_user_id(id) do
     friend_ids_1 = Repo.all(
       from f in Friend,

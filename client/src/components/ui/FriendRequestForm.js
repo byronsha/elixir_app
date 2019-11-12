@@ -18,7 +18,7 @@ const FRIEND_REQUEST_MUTATION = gql`
   }
 `
 
-function FriendRequestForm(props) {
+const FriendRequestForm = (props) => {
   const toast = useToast();
 
   const [email, setEmail] = React.useState('');
@@ -50,6 +50,7 @@ function FriendRequestForm(props) {
   return (
     <Mutation
       mutation={FRIEND_REQUEST_MUTATION}
+      refetchQueries={['ViewerSentFriendRequests']}
       onCompleted={handleCompleted}
     >
       {(submit, { data, loading, error }) => (
